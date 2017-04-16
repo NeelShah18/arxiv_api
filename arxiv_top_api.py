@@ -1,3 +1,8 @@
+'''
+By - Neel Shah
+On - March/2017
+
+'''
 import falcon
 import json
 import urllib.request
@@ -15,7 +20,7 @@ class ArxivLatest(object):
         base_url = 'http://export.arxiv.org/api/query?';
         # Search parameters
         search_query = 'cat:cs.CV+OR+cat:cs.AI+OR+cat:cs.LG+OR+cat:cs.CL+OR+cat:cs.NE+OR+cat:stat.ML' # search for CV,CL,AI,LG,NE,ML field papers
-        start = 0                     
+        start = 0
         # retreive the first 1000 results
         max_results = search_for
         count = 0
@@ -24,7 +29,7 @@ class ArxivLatest(object):
             #time.sleep(5)
             query = 'search_query=%s&start=%i&max_results=%i&sortBy=lastUpdatedDate&sortOrder=descending' % (search_query,start,max_results)
             start = start + search_for
-            # Opensearch metadata such as totalResults, startIndex, 
+            # Opensearch metadata such as totalResults, startIndex,
             # and itemsPerPage live in the opensearch namespase.
             # Some entry metadata lives in the arXiv namespace.
             # This is a hack to expose both of these namespaces in
@@ -44,7 +49,7 @@ class ArxivLatest(object):
             final_str = ''
             # Run through each entry, and print out information
             for entry in feed.entries:
-                
+
                 # print('Published: %s' % entry.published)
                 # print('Title:  %s' % entry.title)
                 p_date = str(entry.published)
@@ -61,7 +66,7 @@ class ArxivLatest(object):
                     pass
                 final_str = final_str+title+' <break time="500ms"/> '+' By '+new_author_list+' <break time="1500ms"/> '
                 x += 1
-                
+
             result_json[ans]=final_str
 
         resp.body = json.dumps(result_json)
